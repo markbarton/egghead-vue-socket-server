@@ -17,15 +17,13 @@ exports.initialize = function (server) {
   io.on('connection', (socket) => {
     logger.debug(`A user connected with ${socket.id}`);
 
-    socket.on('disconnect', function () {
-      const user_data = ids.get(socket.id);
-      logger.debug('USER DISCONNECTED ' + user_data.name)
-    })
-
     socket.on('UPDATE_USER', function (data, fn) {
       logger.debug(`UPDATE_USER triggered for ${data.name}`)
       // Map Socket ID with a User
-      users.set(data.name, data);
+      users.set(data.name, {
+        socket_id: socket.id,
+        ...data
+      });
       ids.set(socket.id, data);
 
       // Also join a room / group
@@ -48,12 +46,6 @@ exports.initialize = function (server) {
       }
       logger.debug(`POPUP_NOTIFICATION triggered for ${recipient}`)
       io.to(recipient).emit('POPUP_NOTIFICATION', data);
-    });
-
-    socket.on('DIALOG_RESPONSE', function (data) {
-      // If we have a name then its to a person else group
-      const user_data = ids.get(socket.id);
-      logger.debug(`${user_data.name} has pressed ${data.response}`);
     });
 
   });

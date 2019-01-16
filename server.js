@@ -15,26 +15,6 @@ const socket = require('./io').io();
 const port = process.env.PORT || 8500;
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/notification/:message',
-    function (req, res) {
-        socket.emit('DIALOG_NOTIFICATION', req.params.message)
-        res.send('');
-    }
-)
-app.get('/binary',
-    function (req, res) {
-
-        fs.readFile(__dirname + '/cat.jpg', function (err, buf) {
-            // it's possible to embed binary data
-            // within arbitrarily-complex objects
-            socket.emit('BINARY_NOTIFICATION', {
-                image: true,
-                buffer: buf.toString('base64')
-            });
-        });
-        res.send('');
-    }
-)
 http.listen(port);
 
 logger.info(`${pjson.name} Server Started >> `);
