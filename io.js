@@ -17,7 +17,7 @@ exports.initialize = function (server) {
   io.on('connection', (socket) => {
     logger.debug(`A user connected with ${socket.id}`);
 
-    socket.on('UPDATE_USER', function (data, fn) {
+    socket.on('UPDATE_USER', function (data) {
       logger.debug(`UPDATE_USER triggered for ${data.name}`)
       // Map Socket ID with a User
       users.set(data.name, {
@@ -28,11 +28,6 @@ exports.initialize = function (server) {
 
       // Also join a room / group
       socket.join(data.group);
-
-      // If callback
-      if (fn) {
-        fn('success')
-      }
     });
 
     socket.on('SEND_MESSAGE', function (data) {
