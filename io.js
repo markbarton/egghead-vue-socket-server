@@ -25,7 +25,10 @@ exports.initialize = function (server) {
     socket.on('UPDATE_USER', function (data, fn) {
       logger.debug(`UPDATE_USER triggered for ${data.name}`)
       // Map Socket ID with a User
-      users.set(data.name, data);
+      users.set(data.name, {
+        socket_id: socket.id,
+        ...data
+      });
       ids.set(socket.id, data);
 
       // Also join a room / group
