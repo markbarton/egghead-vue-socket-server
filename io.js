@@ -17,11 +17,6 @@ exports.initialize = function (server) {
   io.on('connection', (socket) => {
     logger.debug(`A user connected with ${socket.id}`);
 
-    socket.on('disconnect', function () {
-      const user_data = ids.get(socket.id);
-      logger.debug('USER DISCONNECTED ' + user_data.name)
-    })
-
     socket.on('UPDATE_USER', function (data, fn) {
       logger.debug(`UPDATE_USER triggered for ${data.name}`)
       // Map Socket ID with a User

@@ -21,20 +21,7 @@ app.get('/notification/:message',
         res.send('');
     }
 )
-app.get('/binary',
-    function (req, res) {
 
-        fs.readFile(__dirname + '/cat.jpg', function (err, buf) {
-            // it's possible to embed binary data
-            // within arbitrarily-complex objects
-            socket.emit('BINARY_NOTIFICATION', {
-                image: true,
-                buffer: buf.toString('base64')
-            });
-        });
-        res.send('');
-    }
-)
 http.listen(port);
 
 logger.info(`${pjson.name} Server Started >> `);
