@@ -26,5 +26,6 @@ setInterval(function () {
 }, 1000);
 
 function heartbeat() {
-    return Math.ceil(Math.random() * (120 - 80) + 80);
+    // Retun a random number between 60 (inc) and max (exc)
+    return Math.ceil(Math.random() * (160 - 60) + 60);
 }
