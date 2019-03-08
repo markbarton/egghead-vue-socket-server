@@ -7,18 +7,22 @@ const pjson = require("./package.json");
 const path = require('path');
 const http = require('http').Server(app);
 const logger = require('./logger');
-const fs = require('fs');
+const bodyParser = require('body-parser');
 
 require('./io').initialize(http);
 const socket = require('./io').io();
 
 const port = process.env.PORT || 8500;
+app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/notification/:message',
+app.post('/notification',
     function (req, res) {
-        socket.emit('DIALOG_NOTIFICATION', req.params.message)
-        res.send('');
+        logger.debug(`Message Recieved: ${req.body.message}`)
+        socket.emit('DIALOG_NOTIFICATION', {
+            message: req.body.message
+        })
+        res.send();
     }
 )
 

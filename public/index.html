@@ -6,16 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
     <script>
-        var socket = io();
-        socket.on('PULSE', function (msg) {
-            console.log(msg);
-        })
+        function send_message(){
+            axios.post('/notification', {
+                message: document.getElementById('message').value
+             })
+        }
     </script>
 </head>
 
 <body>
+    <div>
+        <label>Message</label>
+        <input name="message" id="message" type="text"><br />
+
+        <button onclick="send_message(); return false">Send Message to Clients</button>
+    </div>
 
 </body>
 
