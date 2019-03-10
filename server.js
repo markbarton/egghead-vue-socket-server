@@ -15,21 +15,18 @@ const socket = require('./io').io();
 const port = process.env.PORT || 8500;
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/notification/:message',
+app.get('/send_image',
     function (req, res) {
-        socket.emit('DIALOG_NOTIFICATION', req.params.message)
-        res.send('');
-    }
-)
-app.get('/binary',
-    function (req, res) {
-        fs.readFile(__dirname + '/cat.jpg', function (err, buf) {
-            socket.emit('BINARY_NOTIFICATION', {
+        logger.debug(`Send Image Called`);
+        const image_file_path = __dirname + get_random_image();
+        logger.debug(`Sending Image ${image_file_path}`);
+        fs.readFile(image_file_path, function (err, buf) {
+            socket.emit('SHOW_IMAGE', {
                 image: true,
                 buffer: buf.toString('base64')
             });
         });
-        res.send('');
+        res.send();
     }
 )
 http.listen(port);
@@ -37,3 +34,8 @@ http.listen(port);
 logger.info(`${pjson.name} Server Started >> `);
 logger.info(`running in ${process.env.NODE_ENV}`);
 logger.info(`running on port ${port}`);
+
+function get_random_image() {
+    const index = Math.ceil(Math.random() * (6 - 1) + 1);
+    return path.normalize(`/images/image${index}.jpg`)
+}
