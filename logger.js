@@ -6,9 +6,6 @@ var pjson = require('./package.json');
 var path = require('path');
 var PROJECT_ROOT = path.join(__dirname, '..');
 var consoleLogger = new winston.transports.Console({
-  timestamp: function () {
-    return new Date().toString();
-  },
   colorize: true
 });
 
