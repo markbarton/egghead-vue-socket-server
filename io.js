@@ -36,17 +36,21 @@ exports.initialize = function (server) {
       socket.join(data.group);
     });
 
-
-    socket.on('QUIZ_RESPONSE', function (data, fn) {
-      // If we have a name then its to a person else group
+    socket.on('QUIZ_RESPONSE', function (data, fn){
       const user_data = ids.get(socket.id);
-      logger.debug(`${user_data.name} has pressed ${data.response}`);
-      // If callback
-      if (fn) {
-        logger.debug('Calling callback function');
-        fn('success')
+      if(user_data){
+        logger.debug(`${user_data.name} has pressed ${data.response}`);
       }
-    });
+
+      if(fn){
+        const yes_no = Math.floor(Math.random() * Math.floor(2));
+        const result = (yes_no>0) ? 'Correct' : 'Incorrect';
+        logger.debug(`Calling callback function with ${data.response} was ${result}`);
+        fn(`Your answer is ${data.response} which is ${result}`)
+      }
+
+    })
+
 
   });
 };
